@@ -12,6 +12,21 @@ delta={
     }  # 練習４keyと移動量の辞書
 
 
+def check_bound(scr_rct:pg.Rect,obj_rct:pg.Rect)->tuple[bool,bool]:
+    """
+    オブジェクトが画面内or画面外を判定し、真理値タプルを返す関数
+    引数1:画面SurfaceのRect
+    引数2:こうかとん、又は、爆弾SurfaceのRect
+    戻り値:横方向、縦方向のはみ出し判定結果(画面内:True/画面外:False)
+    """
+    yoko,tate=True,True
+    if obj_rct.left<scr_rct.left or scr_rct.right<obj_rct.right:
+        yoko=False
+    if obj_rct.top<scr_rct.top or scr_rct.bottom<obj_rct.bottom:
+        tate=False
+    return yoko,tate
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((1600, 900))
@@ -41,9 +56,18 @@ def main():
         for k,mv in delta.items():  # 練習４k,mvに辞書の内容を入れる
             if key_lst[k]:  # 練習４keyに対応して移動
                 kk_rct.move_ip(mv)
+        if check_bound(screen.get_rect(),kk_rct)!=(True,True):
+            for k,mv in delta.items():
+                if key_lst[k]:
+                    kk_rct.move_ip(-mv[0],-mv[1])
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rct)
         bb_rct.move_ip(vx,vy)
+        yoko,tate=check_bound(screen.get_rect(),bb_rct)
+        if not yoko:  # 練習５
+            vx*=-1
+        if not tate:  # 練習５
+            vy*=-1
         screen.blit(bb_img,bb_rct)
         pg.display.update()
         clock.tick(1000)
