@@ -68,6 +68,8 @@ def main():
             vx*=-1
         if not tate:  # 練習５
             vy*=-1
+        if kk_rct.colliderect(bb_rct):
+            return
         screen.blit(bb_img,bb_rct)
         pg.display.update()
         clock.tick(1000)
