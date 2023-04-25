@@ -36,6 +36,7 @@ def main():
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_rct=kk_img.get_rect()  # 練習４kk_rctの設定
     kk_rct.center=900,400  # 練習４kkの初期配置
+    accs=[a for a in range(1,11)]  # 演習２の加速度リスト
     bb_img=pg.Surface((20,20))
     pg.draw.circle(bb_img,(255,0,0),(10,10),10)  # 練習１circleの描画設定
     bb_img.set_colorkey((0,0,0))  # 練習１Surfaceの透明化
@@ -43,8 +44,15 @@ def main():
     vx,vy=+1,+1  # 練習３速度vx,vyの設定
     bb_rct=bb_img.get_rect()  # 練習３bb_rctの設定
     bb_rct.center=x,y  # 練習３初期配置の設定
-
     tmr = 0
+    timer=0
+    """
+    1の書きかけ
+    kk_rz={
+        (0,0):pg.transform.rotozoom(kk_img,0,1.0),
+        (-1,0):pg.transform.rotozoom(kk_img,0,1.0)
+        }
+    """
 
     while True:
         for event in pg.event.get():
@@ -52,6 +60,7 @@ def main():
                 return 0
 
         tmr += 1
+        avx,avy=vx*accs[min(tmr//1000,9)],vy*accs[min(tmr//1000,9)]  # 演習２の加速度をavx,avyで速度にする
         key_lst=pg.key.get_pressed()
         for k,mv in delta.items():  # 練習４k,mvに辞書の内容を入れる
             if key_lst[k]:  # 練習４keyに対応して移動
@@ -62,13 +71,18 @@ def main():
                     kk_rct.move_ip(-mv[0],-mv[1])
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rct)
-        bb_rct.move_ip(vx,vy)
+        bb_rct.move_ip(avx,avy)
         yoko,tate=check_bound(screen.get_rect(),bb_rct)
         if not yoko:  # 練習５
             vx*=-1
         if not tate:  # 練習５
             vy*=-1
-        if kk_rct.colliderect(bb_rct):
+        if kk_rct.colliderect(bb_rct):  # こうかとんがぶつかった時の判定
+            timer=tmr+1000
+            vx=0
+            vy=0
+            kk_img=pg.transform.rotozoom(pg.image.load("ex02/fig/4.png"),-10,1.5)
+        if tmr==timer:  # こうかとんがぶつかってから終わるまでのタイマー
             return
         screen.blit(bb_img,bb_rct)
         pg.display.update()
