@@ -50,7 +50,14 @@ def main():
     1の書きかけ
     kk_rz={
         (0,0):pg.transform.rotozoom(kk_img,0,1.0),
-        (-1,0):pg.transform.rotozoom(kk_img,0,1.0)
+        (-1,0):pg.transform.rotozoom(kk_img,0,1.0),
+        (-1,+1):pg.transform.rotozoom(kk_img,45,1.0),
+        (0,+1):pg.transform.rotozoom(pg.transform.flip(kk_img,True,False),90,1.0),
+        (+1,+1):pg.transform.rotozoom(pg.transform.flip(kk_img,True,False),135,1.0),
+        (+1,0):pg.transform.rotozoom(pg.transform.flip(kk_img,True,False),180,1.0),
+        (+1,-1):pg.transform.rotozoom(pg.transform.flip(kk_img,True,False),225,1.0),
+        (0,-1):pg.transform.rotozoom(pg.transform.flip(kk_img,True,False),270,1.0),
+        (-1,-1):pg.transform.rotozoom(kk_img,-45,1.0),
         }
     """
 
