@@ -47,7 +47,7 @@ def main():
     tmr = 0
     timer=0
     """
-    1の書きかけ
+    演習１の途中
     kk_rz={
         (0,0):pg.transform.rotozoom(kk_img,0,1.0),
         (-1,0):pg.transform.rotozoom(kk_img,0,1.0),
@@ -85,9 +85,7 @@ def main():
         if not tate:  # 練習５
             vy*=-1
         if kk_rct.colliderect(bb_rct):  # こうかとんがぶつかった時の判定
-            timer=tmr+1000
-            vx=0
-            vy=0
+            timer=tmr+300  # こうかとんがぶつかった後の猶予時間
             kk_img=pg.transform.rotozoom(pg.image.load("ex02/fig/4.png"),-10,1.5)
         if tmr==timer:  # こうかとんがぶつかってから終わるまでのタイマー
             return
